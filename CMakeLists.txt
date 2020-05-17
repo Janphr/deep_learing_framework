@@ -4,13 +4,11 @@ project(framework)
 set(CMAKE_CXX_STANDARD 14)
 
 find_package(Eigen3 REQUIRED)
-FIND_PACKAGE( OpenCV )
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build)
 
 include_directories(
         include
         ${EIGEN3_INCLUDE_DIRS}
-        ${OpenCV_INCLUDE_DIRS}
 )
 
 list(APPEND SOURCEFILES
@@ -34,7 +32,7 @@ add_custom_target(framework_INCLUDES DEPENDS ${all_include_files} SOURCES ${all_
 
 add_library(framework SHARED ${SOURCEFILES})
 
-target_link_libraries(framework ${LINK_LIBS} ${OpenCV_LIBS})
+target_link_libraries(framework ${LINK_LIBS})
 
 add_executable(dl_framework app/conv_mnist.cpp)
 

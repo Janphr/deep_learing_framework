@@ -8,8 +8,6 @@
 #include <SGDTrainer.h>
 #include <iomanip>
 #include <timer.h>
-#include <opencv2/core.hpp>
-#include <opencv2/core/eigen.hpp>
 
 #include "Tensor.h"
 
@@ -85,18 +83,18 @@ int main() {
     MatrixXd biasMat1 = MatrixXd::Zero(bias_shape1.r, bias_shape1.c);
     MatrixXd biasMat2 = MatrixXd::Zero(bias_shape2.r, bias_shape2.c);
 
-    cv::FileStorage fs("../data/training_data.xml", cv::FileStorage::READ);
-    if (!fs.isOpened())
-        throw runtime_error("Could not open the training data file: ");
-    cv::Mat dst;
-    fs["weight_matrix1"] >> dst;
-    cv2eigen(dst, weightsMat1);
-    fs["weight_matrix2"] >> dst;
-    cv2eigen(dst, weightsMat2);
-    fs["bias_matrix1"] >> dst;
-    cv2eigen(dst, biasMat1);
-    fs["bias_matrix2"] >> dst;
-    cv2eigen(dst, biasMat2);
+//    cv::FileStorage fs("../data/training_data.xml", cv::FileStorage::READ);
+//    if (!fs.isOpened())
+//        throw runtime_error("Could not open the training data file: ");
+//    cv::Mat dst;
+//    fs["weight_matrix1"] >> dst;
+//    cv2eigen(dst, weightsMat1);
+//    fs["weight_matrix2"] >> dst;
+//    cv2eigen(dst, weightsMat2);
+//    fs["bias_matrix1"] >> dst;
+//    cv2eigen(dst, biasMat1);
+//    fs["bias_matrix2"] >> dst;
+//    cv2eigen(dst, biasMat2);
 
     shared_ptr<Tensor> weights1 = make_shared<Tensor>(weightsMat1);
     shared_ptr<Tensor> weights2 = make_shared<Tensor>(weightsMat2);
@@ -168,58 +166,6 @@ int main() {
     network->run();
     cout << "Classifying finished in: " << timer->stop()/1000.0 << " seconds." << endl;
     network->print_result(result_for_every_x_dataset);
-
-//    int counter = 0;
-//    timer->start();
-//    while (trainer->getAmountEpochs() > counter) {
-//        fullyConnected1->forward(t1_vec, t2_vec);
-////        cout << "fullyConnected1: " << t2_vec[0].getElements() << endl;
-//        sigmoidActivation->forward(t2_vec, t3_vec);
-////        cout << "sigmoidActivation:" << t3_vec[0].getElements() << endl;
-//        fullyConnected2->forward(t3_vec, t4_vec);
-////        cout << "fullyConnected2:" << t4_vec[0].getElements() << endl;
-//        softmax->forward(t4_vec, t5_vec);
-//        cout << "softmax:" << t5_vec[0].getElements() << endl;
-//        crossEntropy->forward(t5_vec, t6_vec);
-//
-////        cout << "target:" << t6_vec[0].getElements() << endl;
-//
-//        crossEntropy->backward(t6_vec, t5_vec);
-////        cout << "crossEntropy:" << t5_vec[0].getDeltas() << endl;
-//        softmax->backward(t5_vec, t4_vec);
-////        cout << "softmax:" << t4_vec[0].getDeltas() << endl;
-//        fullyConnected2->backward(t4_vec, t3_vec);
-////        cout << "fullyConnected2:" << t3_vec[0].getDeltas() << endl;
-//        sigmoidActivation->backward(t3_vec, t2_vec);
-////        cout << "sigmoidActivation:" << t2_vec[0].getDeltas() << endl;
-//        fullyConnected1->backward(t2_vec, t1_vec);
-////        cout << "fullyConnected1:" << t1_vec[0].getDeltas() << endl;
-//
-//        trainer->optimize(t1_vec);
-//        counter++;
-////        cout << "-------------------------------" << endl;
-//    }
-//
-//    for(int i = 0; i < amount_of_training_datasets; i++){
-//        cout << setw(30) << "CrossEntropyLayer Deltas: ";
-//        for(int j = 0; j < target_vec[0].getElements().size(); j++) {
-//            cout << setw(15) << t5_vec[i].getDeltas().coeffRef(j);
-//        }
-//        cout << endl << setw(30) << "Target values:";
-//        for(int j = 0; j < target_vec[0].getElements().size(); j++) {
-//            cout << setw(15) << target_vec[i].getElements().coeffRef(j);
-//        }
-//        cout << endl << setw(30) << "Loss:";
-//        cout << setw(15) << t6_vec[i].getElements();
-//
-//        cout << endl << "--------------------------------------------------"
-//                        "--------------------------------------------------"
-//                        "--------------------------------------------------"
-//                        "--------------------------------------------------"<< endl;
-//    }
-//
-//    cout << "Finished in: " << timer->stop()/1000.0 << " seconds.";
-
 
     return 0;
 }

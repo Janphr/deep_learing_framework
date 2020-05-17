@@ -5,7 +5,6 @@
 #include <Network.h>
 #include <FullyConnectedLayer.h>
 #include <memory>
-#include <opencv2/core.hpp>
 #include <Conv2DLayer.h>
 
 #include "Tensor.h"

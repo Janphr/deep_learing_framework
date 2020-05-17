@@ -11,8 +11,6 @@
 #include <CrossEntropyLayer.h>
 #include <SGDTrainer.h>
 #include <timer.h>
-#include <opencv2/core.hpp>
-#include <opencv2/core/eigen.hpp>
 #include <Conv2DLayer.h>
 
 #include "Tensor.h"
