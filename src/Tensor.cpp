@@ -40,6 +40,10 @@ Shape &Tensor::getShape() {
     return shape;
 }
 
+vector< tuple<int, double> > & Tensor::getPoolingVec() {
+return pooling_vec;
+}
+
 Shape::Shape(int r, int c, int d) {
     this->r = r;
     this->c = c;

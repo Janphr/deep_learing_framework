@@ -28,6 +28,7 @@ public:
     Tensor(Eigen::MatrixXd &elements);
     Tensor(Eigen::MatrixXd &elements, Eigen::MatrixXd &deltas);
 
+
     Eigen::MatrixXd &getElements();
 
     void setElements(const Eigen::MatrixXd &elements);
@@ -38,9 +39,13 @@ public:
 
     Shape &getShape();
 
+    vector< tuple<int, double> > &getPoolingVec();
+
 private:
     shared_ptr<Eigen::MatrixXd> elements;
     shared_ptr<Eigen::MatrixXd> deltas;
+
+    vector< tuple<int, double> > pooling_vec; //new idx (old idx, max_value)
 
     Shape shape = {0,0,0};
 };

@@ -9,8 +9,9 @@
 class FullyConnectedLayer : public Layer {
 
 public:
+    FullyConnectedLayer(const Shape &inShape, const Shape &outShape);
 
-    FullyConnectedLayer(const Tensor &weightMatrix, const Tensor &bias, const Shape &inShape, const Shape &outShape,
+    FullyConnectedLayer(Tensor weightMatrix, Tensor bias, const Shape &inShape, const Shape &outShape,
                         bool firstLayer);
 
     /*Y = X * W + bias*/
@@ -22,9 +23,11 @@ public:
     /*dL/dW = X^T * dY; dL/dbias = dY*/
     void update(SGDTrainer &trainer) override;
 
-private:
     Tensor weightMatrix;
     Tensor bias;
+
+private:
+
     Shape inShape;
     Shape outShape;
     bool first_layer;

@@ -30,6 +30,8 @@ list(APPEND SOURCEFILES
         src/MeanSquaredErrorLayer.cpp
         src/SGDTrainer.cpp
         src/Network.cpp
+        src/Conv2DLayer.cpp
+        src/MaxPooling.cpp
         )
 
 file(GLOB_RECURSE all_include_files RELATIVE "${CMAKE_SOURCE_DIR}" *.h *.hpp)
@@ -40,6 +42,6 @@ add_library(framework SHARED ${SOURCEFILES})
 
 target_link_libraries(framework ${LINK_LIBS} ${OpenCV_LIBS})
 
-add_executable(dl_framework app/main.cpp)
+add_executable(dl_framework app/conv_mnist.cpp)
 
 target_link_libraries(dl_framework framework)

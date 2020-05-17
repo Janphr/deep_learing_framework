@@ -4,6 +4,7 @@
 
 #include "FullyConnectedLayer.h"
 #include <unsupported/Eigen/CXX11/Tensor>
+#include <utility>
 #include <vector>
 
 #include <utility>
@@ -24,6 +25,7 @@ void FullyConnectedLayer::forward(vector<Tensor> &in, vector<Tensor> &out, int i
         out[i].setElements(tmp);
     }
 
+//    cout << this->weightMatrix.getElements() << endl;
 //    cout << in[0].getElements() << endl;
 //    cout << out[0].getElements() << endl;
 //    cout << in[5].getElements() << endl;
@@ -59,12 +61,7 @@ void FullyConnectedLayer::backward(vector<Tensor> &in, vector<Tensor> &out, int 
 }
 
 void FullyConnectedLayer::update(SGDTrainer &trainer) {
-    /*dL/dW = X^T * dY; dL/dbias = dY*/
 
-//    Eigen::Matrix<double, Eigen::Dynamic, 1>::ConstAlignedMapType dw(this->weightMatrix.getDeltas().data(), this->weightMatrix.getDeltas().size());
-//    Eigen::Matrix<double, Eigen::Dynamic, 1>::ConstAlignedMapType db(this->bias.getDeltas().data(), this->bias.getDeltas().size());
-//    Eigen::Matrix<double, Eigen::Dynamic, 1>::ConstAlignedMapType w(this->weightMatrix.getElements().data(),this->weightMatrix.getElements().size());
-//    Eigen::Matrix<double, Eigen::Dynamic, 1>::AlignedMapType b(this->bias.getElements().data(),this->bias.getElements().size());
     trainer.optimize(this->weightMatrix);
     trainer.optimize(this->bias);
 
@@ -82,11 +79,20 @@ void FullyConnectedLayer::trans(Tensor &tensor, Eigen::MatrixXd &transposed, con
     }
 }
 
-FullyConnectedLayer::FullyConnectedLayer(const Tensor &weightMatrix, const Tensor &bias, const Shape &inShape,
-                                         const Shape &outShape, bool firstLayer) : weightMatrix(weightMatrix),
-                                                                                   bias(bias), inShape(inShape),
+FullyConnectedLayer::FullyConnectedLayer(Tensor weightMatrix, Tensor bias, const Shape &inShape,
+                                         const Shape &outShape, bool firstLayer) : weightMatrix(std::move(weightMatrix)),
+                                                                                   bias(std::move(bias)), inShape(inShape),
                                                                                    outShape(outShape),
                                                                                    first_layer(firstLayer) {}
+
+FullyConnectedLayer::FullyConnectedLayer(const Shape &inShape, const Shape &outShape) : inShape(inShape),
+                                                                                        outShape(outShape) {
+    first_layer = false;
+    Eigen::MatrixXd weight_mat = -1+(Eigen::ArrayXXd::Random(inShape.c, outShape.c)*0.5+0.5)*2;
+    Eigen::MatrixXd bias_mat = Eigen::MatrixXd::Zero(outShape.r, outShape.c);
+    this->weightMatrix = *new Tensor(weight_mat);
+    this->bias = *new Tensor(bias_mat);
+}
 
 
 
