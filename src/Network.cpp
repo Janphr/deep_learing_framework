@@ -4,7 +4,6 @@
 
 #include <iomanip>
 #include "Network.h"
-#include <omp.h>
 #include <timer.h>
 
 void Network::run() {
@@ -50,10 +49,8 @@ void Network::train(SGDTrainer &trainer) {
     int layer_size = this->layers.size();
     int tensor_size = this->tensors[0].size();;
     MatrixXf::Index maxIndex[2];
-    omp_set_num_threads(8);
     unique_ptr<Timer> timer = make_unique<Timer>();
     while (trainer.getAmountEpochs() > counter) {
-//#pragma omp parallel for reduction(+:avg_loss,accuracy)
         cout << "Progress of " << counter + 1 << ". epochs:" << endl;
         for (int i = 0; i < tensor_size; i++) { //over all data tensors
             for (int j = 0; j < layer_size; j++) {       //over all layers
@@ -77,7 +74,6 @@ void Network::train(SGDTrainer &trainer) {
             }
 
             for (int j = 0; j < layer_size; j++) {
-//#pragma omp critical
                 this->layers[j]->update(trainer);
             }
             cout << '\r' << ((1.0*i)/tensor_size) * 100 << "%";
