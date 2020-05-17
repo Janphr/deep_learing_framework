@@ -70,7 +70,8 @@ void InputLayer::convert(const string& filename, vector<vector<Tensor>> &out, in
                     m(r*n_cols + c) = static_cast<double>(temp)/255;
                 }
             }
-            auto *t = new Tensor(m);
+            MatrixXd deltas = MatrixXd::Zero(1, n_rows*n_cols);
+            auto *t = new Tensor(m, deltas);
             vector<Tensor> tv = {*t};
             t->getShape().r = n_rows;
             t->getShape().c = n_cols;

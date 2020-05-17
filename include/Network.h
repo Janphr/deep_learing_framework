@@ -13,6 +13,7 @@ public:
     explicit Network(vector<shared_ptr<Layer>>& layers, vector<vector<vector<Tensor>>>& tensors);
     void train(SGDTrainer &trainer);
     void run();
+    void detect(int &detected_number, double &probability);
     void set_data(vector<vector<Tensor>> &data);
     void set_targets(vector<Tensor> &targets);
     void print_result(int every_x_dataset);
